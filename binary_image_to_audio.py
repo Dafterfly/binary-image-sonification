@@ -4,29 +4,38 @@ import random
 import time
 import beep_generator
 
-# Load the binary image (pure black and white)
-image_path = "WolframRule30.png"
-image = Image.open(image_path)
-img_data = np.array(image)
+import argparse
 
-# Generate audio samples
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--image_path', nargs='?', default="WolframRule30.png", type=str)
+    parser.add_argument('--min_random_freq', nargs='?', default="400", type=int)
+    parser.add_argument('--max_random_freq', nargs='?', default="4000", type=int)
+    parser.add_argument('--beep_duration_ms', nargs='?', default="100", type=int)
+    parser.add_argument('--silence_duration_ms', nargs='?', default="50", type=int)
 
-bg = beep_generator.BeepGenerator()
+    args = parser.parse_args()
 
-i=0
-for row in img_data:
-    print(f"row {i}:", end="")
-    i = i+1
-    print(''.join(str(i) for i in row))
-    for pixel_value in row:
-        
-        if pixel_value == 0:  # Black pixel
-            frequency = random.randint(400, 4000)
-            bg.append_sinewave(volume=1, duration_milliseconds=100, freq=frequency)
-        else:
-            bg.append_silence(duration_milliseconds=50)
+    # Load the binary image (pure black and white)
+    image = Image.open(args.image_path)
+    img_data = np.array(image)
 
-bg.save_wav(f'{time.strftime("%Y%m%d-%H%M%S")}.wav')
+    # Generate audio samples
+    bg = beep_generator.BeepGenerator()
 
-
+    i=0
+    for row in img_data:
+        print(f"row {i}:", end="")
+        i = i+1
+        print(''.join(str(i) for i in row))
+        for pixel_value in row:
+            
+            if pixel_value == 0:  # Black pixel
+                frequency = random.randint(args.min_random_freq, args.max_random_freq)
+                bg.append_sinewave(volume=1, duration_milliseconds=args.beep_duration_ms, freq=frequency)
+            else:
+                bg.append_silence(duration_milliseconds=args.silence_duration_ms)
     
+    output_filename = f'{time.strftime("%Y%m%d-%H%M%S")}.wav'
+    print (f"Audio saved at {output_filename}")
+    bg.save_wav(output_filename)
