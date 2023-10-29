@@ -13,6 +13,8 @@ if __name__ == '__main__':
     parser.add_argument('--max_random_freq', nargs='?', default="4000", type=int)
     parser.add_argument('--beep_duration_ms', nargs='?', default="100", type=int)
     parser.add_argument('--silence_duration_ms', nargs='?', default="50", type=int)
+    parser.add_argument('--varied_tones', action=argparse.BooleanOptionalAction)
+    parser.add_argument('--constant_freq', nargs='?', default="440", type=int)
 
     args = parser.parse_args()
 
@@ -31,7 +33,11 @@ if __name__ == '__main__':
         for pixel_value in row:
             
             if pixel_value == 0:  # Black pixel
-                frequency = random.randint(args.min_random_freq, args.max_random_freq)
+                if args.varied_tones:
+                    frequency = random.randint(args.min_random_freq, args.max_random_freq)
+                else:
+                    frequency = args.constant_freq
+                
                 bg.append_sinewave(volume=1, duration_milliseconds=args.beep_duration_ms, freq=frequency)
             else:
                 bg.append_silence(duration_milliseconds=args.silence_duration_ms)
