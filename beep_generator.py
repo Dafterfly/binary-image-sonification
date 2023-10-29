@@ -1,7 +1,8 @@
+# "python - how can I generate a WAV file with beeps?"; StackOverflow; Rik Mulder; Dec 6, 2022 at 23:48; https://stackoverflow.com/a/74710298
+
 import scipy.io.wavfile
 import numpy as np
 
-# https://stackoverflow.com/a/74710298
 class BeepGenerator:
     def __init__(self):
         # Audio will contain a long list of samples (i.e. floating point numbers describing the
