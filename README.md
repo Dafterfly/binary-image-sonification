@@ -28,6 +28,8 @@ python binary_image_to_audio.py [--image_path IMAGE_PATH] [--min_random_freq MIN
 
     --constant_freq: Constant frequency for audio generation in Hz (if not using varied tones) (Default: 440)
     
+    --display_image: Use this flag if you want print the binary image array to the console. It will print a '0' for a black pixel and '1' for a whte pixel
+    
 ## Examples
 
 - Convert a binary image to audio with default settings:

@@ -15,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--silence_duration_ms', nargs='?', default="50", type=int)
     parser.add_argument('--varied_tones', action=argparse.BooleanOptionalAction)
     parser.add_argument('--constant_freq', nargs='?', default="440", type=int)
+    parser.add_argument('--display_image', action=argparse.BooleanOptionalAction)
 
     args = parser.parse_args()
 
@@ -27,9 +28,11 @@ if __name__ == '__main__':
 
     i=0
     for row in img_data:
-        print(f"row {i}:", end="")
-        i = i+1
-        print(''.join(str(i) for i in row))
+        if args.display_image:
+            print(f"row {i}:", end="")
+            i = i+1
+            print(''.join(str(i) for i in row))
+            
         for pixel_value in row:
             
             if pixel_value == 0:  # Black pixel
